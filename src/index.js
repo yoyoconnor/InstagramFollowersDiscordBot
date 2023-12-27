@@ -93,10 +93,35 @@ Entry.findOne({ encryptedId: session.encryptedId })
   // Handle error
   console.error(err);
 });
-
-
-
     //send instagram basic display api
-   
   res.redirect(`https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/callback/&scope=user_profile,user_media&response_type=code`);
+});
+
+app.get('/auth/callback', (req, res) => {
+    session.code=req.query.code;
+    //get instagram id
+    //store in mongo
+    //send dm to user
+    async function callback() {
+      let response = await fetch('https://api.instagram.com/oauth/access_token', {
+          method: 'POST',
+          body: new URLSearchParams({
+              'client_id': `${process.env.INSTAGRAM_CLIENT_ID}`,
+              'client_secret': `${process.env.INSTAGRAM_CLIENT_SECRET}`,
+              'grant_type': 'authorization_code',
+              'redirect_uri': 'https://sudocrm.onrender.com/auth/callback/',
+              'code': `${session.code}`,
+          })
+      });
+      // let response2 = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${response.access_token}`)
+      let idandaccess = await response.json();
+      let resposne = await (await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${idandaccess.access_token}`)).json();
+      
+      //check if user follows sudo 0=unknown 1=nonfollower 2=follower
+      session.instagramId=resposne.id;
+      session.instagramUsername=resposne.username;
+      console.log(session);
+  }
+  callback();
+  res.send(`your discord `);
 });

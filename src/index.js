@@ -21,3 +21,7 @@ const client = new Client({
         IntentsBitField.Flags.MessageContent
     ]
 });
+
+client.on('ready', (c) => {
+    console.log(`Logged in as ${c.user.tag}!`);
+})

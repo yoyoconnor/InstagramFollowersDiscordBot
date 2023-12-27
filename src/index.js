@@ -60,3 +60,43 @@ client.on('messageCreate', (msg) => {
         }
       });
     }});
+
+app.get('/verify/', (req, res) => {
+    //add unique hashid
+    session.encryptedId=req.query.id;
+    console.log(`initialsession ${session}`);
+    //decode hashid to discord id
+    //get discord id
+    //
+    // Find the entry and update session properties
+    Entry.findOne({ encryptedId: session.encryptedId })
+.then(entry => {
+  session.discordId = entry.discordId;
+  session.discordTag = entry.discordTag;
+  console.log(`Session after adding discord: ${JSON.stringify(session)}`);
+})
+.catch(err => {
+  // Handle error
+  console.error(err);
+});
+
+// Remove hashid from mongo
+Entry.findOne({ encryptedId: session.encryptedId })
+.then(entry => {
+  entry.encryptedIds.pull(session.encryptedId);
+  return entry.save();
+})
+.then(() => {
+  console.log(`Session after removed hash: ${JSON.stringify(session)}`);
+})
+.catch(err => {
+  // Handle error
+  console.error(err);
+});
+
+
+
+    //send instagram basic display api
+   
+  res.redirect(`https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/callback/&scope=user_profile,user_media&response_type=code`);
+});

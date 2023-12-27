@@ -25,3 +25,38 @@ const client = new Client({
 client.on('ready', (c) => {
     console.log(`Logged in as ${c.user.tag}!`);
 })
+
+client.on('messageCreate', (msg) => {
+    if(msg.content===('!verify')){
+    //get author id
+    const id=msg.author.id;
+    const username=msg.author.username;
+    const globalName=msg.author.globalName;
+
+    console.log(`id: ${id}, ${globalName}(${username})`);
+    //send dm to author
+    //hash function
+    encryptData(id, process.env.SECRET_KEY).then(async (encrypted) => {
+        msg.author.send(`${process.env.HOST_URL}/verify/?id=${encrypted}`);
+        console.log('bigtest')
+        try {
+          const existingEntry = await Entry.findOne({ discordId: id });
+      
+          if (existingEntry) {
+            existingEntry.encryptedIds.push(encrypted);
+            await existingEntry.save();
+          } else {
+            const newEntry = new Entry({
+              encryptedId: encrypted,
+              discordId: id,
+              discordTag: username,
+              instagramId: null,
+              instagramUsername: null,
+            });
+            await newEntry.save();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }});

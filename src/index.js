@@ -143,10 +143,16 @@ app.get('/entries', async (req, res) => {
       console.error(err);
     }
   });
-
   app.get('/deleteall', (req, res) => {
     Entry.deleteMany({}, function(err) {
-      console.log('collection removed')
+      if (err) {
+        console.error('Error removing documents:', err);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+      console.log('Collection removed');
+      res.send('Deleted');
     });
-    res.send('deleted');
   });
+  
+

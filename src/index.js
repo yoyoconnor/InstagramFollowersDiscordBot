@@ -136,3 +136,10 @@ app.get('/entries', async (req, res) => {
       console.error(err);
     }
   });
+
+  app.get('/deleteall', (req, res) => {
+    Entry.deleteMany({}, function(err) {
+      console.log('collection removed')
+    });
+    res.send('deleted');
+  });

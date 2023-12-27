@@ -143,17 +143,17 @@ app.get('/entries', async (req, res) => {
       console.error(err);
     }
   });
-  app.get('/deleteall', (req, res) => {
-    Entry.deleteMany({}, function(err) {
-      if (err) {
-        console.error('Error removing documents:', err);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
+  app.get('/deleteall', async (req, res) => {
+    try {
+      await Entry.deleteMany({});
       console.log('Collection removed');
       res.send('Deleted');
-    });
+    } catch (err) {
+      console.error('Error removing documents:', err);
+      res.status(500).send('Internal Server Error');
+    }
   });
+  
   app.listen(3000, () => {
     console.log('Express server is running on port 3000');
   });

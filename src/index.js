@@ -12,3 +12,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true
     }));
+
+const client = new Client({
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent
+    ]
+});

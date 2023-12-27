@@ -120,6 +120,13 @@ app.get('/auth/callback', (req, res) => {
       //check if user follows sudo 0=unknown 1=nonfollower 2=follower
       session.instagramId=resposne.id;
       session.instagramUsername=resposne.username;
+      //add instagram id to mongo
+      Entry.findOne({ discordId: session.discordId })
+      .then(entry => {
+        entry.instagramId = session.instagramId;
+        entry.instagramUsername = session.instagramUsername;
+        return entry.save();
+      })
       console.log(session);
   }
   callback();

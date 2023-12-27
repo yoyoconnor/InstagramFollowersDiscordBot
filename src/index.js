@@ -122,11 +122,20 @@ app.get('/auth/callback', (req, res) => {
       session.instagramUsername=resposne.username;
       //add instagram id to mongo
       Entry.findOne({ discordId: session.discordId })
-      .then(entry => {
-        entry.instagramId = session.instagramId;
-        entry.instagramUsername = session.instagramUsername;
-        return entry.save();
-      })
+  .then(entry => {
+    if (entry) {
+      entry.instagramId = session.instagramId;
+      entry.instagramUsername = session.instagramUsername;
+      return entry.save();
+    } else {
+      console.error("Entry not found for discordId:", session.discordId);
+      // Handle the case when the entry is not found
+    }
+  })
+  .catch(err => {
+    // Handle errors
+    console.error(err);
+  });
       console.log(session);
   }
   callback();

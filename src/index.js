@@ -136,6 +136,10 @@ app.get('/auth/callback', (req, res) => {
 app.get('/entries', async (req, res) => {
     try {
       const entries = await Entry.find();
+      if(entries.length === 0) {
+        res.send('No entries found');
+        return;
+      }
       console.log(entries);
       console.log(entries[0].encryptedIds);
       res.json(entries);
@@ -143,6 +147,7 @@ app.get('/entries', async (req, res) => {
       console.error(err);
     }
   });
+  
   app.get('/deleteall', async (req, res) => {
     try {
       await Entry.deleteMany({});

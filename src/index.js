@@ -125,3 +125,14 @@ app.get('/auth/callback', (req, res) => {
   callback();
   res.send(`your discord `);
 });
+
+app.get('/entries', async (req, res) => {
+    try {
+      const entries = await Entry.find();
+      console.log(entries);
+      console.log(entries[0].encryptedIds);
+      res.json(entries);
+    } catch (err) {
+      console.error(err);
+    }
+  });

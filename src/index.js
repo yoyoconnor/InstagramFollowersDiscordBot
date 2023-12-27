@@ -154,5 +154,7 @@ app.get('/entries', async (req, res) => {
       res.send('Deleted');
     });
   });
-  
+  app.listen(3000, () => {
+    console.log('Express server is running on port 3000');
+  });
 

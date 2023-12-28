@@ -1,11 +1,12 @@
-const connectDB = require("./db/connection");
-const Entry = require("./db/schema");
-const express = require('express');
-const app = express();
 const {Client, IntentsBitField} = require('discord.js');
 require('dotenv').config();
-const session = require('express-session');
 const encryptData = require('./encryption.js');
+const express = require('express');
+const app = express();
+const connectDB = require("./db/connection");
+const Entry = require("./db/schema");
+const session = require('express-session');
+connectDB();
 
 app.use(session({
     secret: process.env.EXPRESS_SECRET,
@@ -25,7 +26,6 @@ const client = new Client({
 client.on('ready', (c) => {
     console.log(`Logged in as ${c.user.tag}!`);
 })
-
 client.on('messageCreate', (msg) => {
     if(msg.content===('!verify')){
     //get author id
@@ -60,6 +60,7 @@ client.on('messageCreate', (msg) => {
         }
       });
     }});
+    
 
 app.get('/verify/', (req, res) => {
     //add unique hashid
@@ -69,7 +70,7 @@ app.get('/verify/', (req, res) => {
     //get discord id
     //
     // Find the entry and update session properties
-    Entry.findOne({ encryptedId: session.encryptedId })
+Entry.findOne({ encryptedId: session.encryptedId })
 .then(entry => {
   session.discordId = entry.discordId;
   session.discordTag = entry.discordTag;
@@ -93,7 +94,11 @@ Entry.findOne({ encryptedId: session.encryptedId })
   // Handle error
   console.error(err);
 });
+
+
+
     //send instagram basic display api
+   
   res.redirect(`https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/callback/&scope=user_profile,user_media&response_type=code`);
 });
 
@@ -122,27 +127,24 @@ app.get('/auth/callback', (req, res) => {
       session.instagramUsername=resposne.username;
       //add instagram id to mongo
       Entry.findOne({ discordId: session.discordId })
-  .then(entry => {
-    if (entry) {
-      entry.instagramId = session.instagramId;
-      entry.instagramUsername = session.instagramUsername;
-      return entry.save();
-    } else {
-      console.error("Entry not found for discordId:", session.discordId);
-      // Handle the case when the entry is not found
-    }
-  })
-  .catch(err => {
-    // Handle errors
-    console.error(err);
-  });
+      .then(entry => {
+        entry.instagramId = session.instagramId;
+        entry.instagramUsername = session.instagramUsername;
+        return entry.save();
+      })
       console.log(session);
   }
   callback();
   res.send(`your discord `);
-});
 
-app.get('/entries', async (req, res) => {
+
+
+});
+app.get('/test', (req, res) => {
+    res.send('test');
+  });
+  
+  app.get('/entries', async (req, res) => {
     try {
       const entries = await Entry.find();
       if(entries.length === 0) {
@@ -168,7 +170,14 @@ app.get('/entries', async (req, res) => {
     }
   });
   
+  
   app.listen(3000, () => {
     console.log('Express server is running on port 3000');
   });
+//display all mongo entries
 
+
+
+
+
+client.login(process.env.DISCORD_TOKEN);

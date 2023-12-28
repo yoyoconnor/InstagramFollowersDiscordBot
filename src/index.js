@@ -127,15 +127,35 @@ app.get('/auth/callback', (req, res) => {
       session.instagramUsername=resposne.username;
       //add instagram id to mongo
       Entry.findOne({ discordId: session.discordId })
-      .then(entry => {
-        entry.instagramId = session.instagramId;
-        entry.instagramUsername = session.instagramUsername;
-        return entry.save();
-      })
+  .then(entry => {
+    if (!entry) {
+      console.log('no entry found');
+      return;
+    }
+
+    entry.instagramId = session.instagramId;
+    entry.instagramUsername = session.instagramUsername;
+
+    return entry.save();
+  })
+  .then(savedEntry => {
+    console.log(session); // This will log the session after the save operation is complete
+  })
+  .catch(error => {
+    console.error(error); // Handle any errors that might occur during the process
+  });
       console.log(session);
+
   }
   callback();
-  res.send(`your discord `);
+  res.send(Entry.findMany({ discordId: session.discordId }));
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      return;
+    }
+    console.log('Session destroyed');
+  });
 
 
 
@@ -178,6 +198,6 @@ app.get('/test', (req, res) => {
 
 
 
-
+//a
 
 client.login(process.env.DISCORD_TOKEN);

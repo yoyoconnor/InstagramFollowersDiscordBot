@@ -172,7 +172,8 @@ app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
   const fileContent = fileBuffer.toString('utf-8'); // Convert buffer to string
 
   // Process the fileContent as needed
-  console.log(fileContent);
+  const listOfFollowers = fileContent.map(item => item.string_list_data[0].value);
+  console.log(listOfFollowers);
 
   // Respond to the client
   res.status(200).send('File uploaded successfully');

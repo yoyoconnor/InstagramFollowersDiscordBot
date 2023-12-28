@@ -6,6 +6,7 @@ const app = express();
 const connectDB = require("./db/connection");
 const Entry = require("./db/schema");
 const session = require('express-session');
+const multer = require('multer');
 connectDB();
 
 app.use(session({
@@ -153,6 +154,36 @@ app.get('/auth/callback', (req, res) => {
 
 
 });
+
+app.get('/uploadfollowers', (req, res) => {
+  //send upload.html to user
+  res.sendFile(__dirname + '/pages/upload.html');
+}
+);
+
+
+// Set up multer storage
+const storage = multer.memoryStorage(); // Store the file in memory
+const upload = multer({ storage: storage });
+
+app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
+  // Access the uploaded file using req.file
+  const fileBuffer = req.file.buffer;
+  const fileContent = fileBuffer.toString('utf-8'); // Convert buffer to string
+
+  // Process the fileContent as needed
+  console.log(fileContent);
+
+  // Respond to the client
+  res.status(200).send('File uploaded successfully');
+});
+
+port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 app.get('/test', (req, res) => {
     res.send('test');
   });

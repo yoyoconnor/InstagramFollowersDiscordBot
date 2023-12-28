@@ -148,14 +148,7 @@ app.get('/auth/callback', (req, res) => {
 
   }
   callback();
-  res.send(Entry.findMany({ discordId: session.discordId }));
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error destroying session:', err);
-      return;
-    }
-    console.log('Session destroyed');
-  });
+    res.send('done');
 
 
 

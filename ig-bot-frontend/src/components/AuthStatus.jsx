@@ -32,7 +32,7 @@ export default function AuthStatus( { status } ) {
         return (
         <>  
             <div className="title-text">Status Code Error</div>
-            <div className="sub-title-text">Please check your network status and try again</div>
+            <div className="sub-title-text">Please check network status and try again</div>
         </>
         )
     }

@@ -9,14 +9,16 @@ FileUpload.defaultProps = {
 }
 
 
-export default function FileUpload( accessAllowed ) {
+export default function FileUpload( { accessAllowed } ) {
+
 
     if(accessAllowed){
         return (
             <>
+                <div className='sub-title-text'>Upload your file</div>
                 <form id="file-upload-form" action="/action_page.php">
-                <input type="file" id="myFile" name="filename" />
-                <input type="submit" />
+                <input title='' type="file" id="myFile" name="filename" />
+                <input id='submit-button' type="submit" />
                 </form>
             </>
         )
@@ -24,7 +26,7 @@ export default function FileUpload( accessAllowed ) {
     else {
         return (
             <>
-                <div className="title-text">Access Restricted or Authorization Unsuccesful</div>
+                <div className="title-text">Authorization Unsuccesful</div>
                 <div className="sub-title-text">Contact Admin for Support</div>
             </>
         )  

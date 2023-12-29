@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <AuthStatus status={'good'}/>
-      <FileUpload accessAllowed={true}/>
+      {/* <FileUpload accessAllowed={true}/> */}
     </>
   )
 }

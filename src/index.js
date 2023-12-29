@@ -44,6 +44,8 @@ client.on('messageCreate', (msg) => {
         try {
           const encryptedData=encrypted;
           msg.author.send(`${process.env.HOST_URL}/verify/?id=${encryptedData}`);
+          if(req.query.id==='removed'){
+            res.send('bros trynna cayuse errors')}
           console.log(`initial encrypted: ${encryptedData}`)
           const existingEntry = await Entry.findOne({ discordId: id });
           if (!existingEntry) {

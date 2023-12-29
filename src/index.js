@@ -10,7 +10,7 @@ const multer = require('multer');
 const fs = require('fs');
 connectDB();
 //const listOfFollowers = JSON.parse(fs.readFileSync('followers.json', 'utf8'));
-const listOfFollowers = ['yoyoconnor69','connorcodes']
+let listOfFollowers = ['yoyoconnor69','connorcodes']
 app.use(session({
     secret: process.env.EXPRESS_SECRET,
     resave: false,
@@ -219,13 +219,10 @@ app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
   const fileContent = fileBuffer.toString('utf-8'); // Convert buffer to string
 
   // Process the fileContent as needed
-  const listOfFollowers = JSON.parse(fileContent).map(item => item.string_list_data[0].value);
+  let listOfFollowers = JSON.parse(fileContent).map(item => item.string_list_data[0].value);
   console.log(listOfFollowers);
   //download list of followers to followers.json
-  fs.writeFile('followers.json', JSON.stringify(listOfFollowers), (err) => {
-    if (err) throw err;
-    console.log('Data written to file');
-  });
+  
   //refresh checks of users against new list of followers
   Entry.find()
   .then(entries => {

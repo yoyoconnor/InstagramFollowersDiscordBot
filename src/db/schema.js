@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-    encryptedIds: { type: Array, required: true},
+    hash: { type: String, required: true},
     discordId: { type: String, required: true },
     discordTag: { type: String, required: true },
     instagramId: { type: String, required: false },
     instagramUsername: { type: String, required: false },
+    isFollower: { type: Boolean, required: false },
 });
   
 const Entry = mongoose.model("Entry", schema);

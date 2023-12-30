@@ -357,7 +357,7 @@ app.get('/test', (req, res) => {
 
   app.get('/authorized', async (req, res) => {
     try {
-      es.sendFile(__dirname + '/pages/mvp-index.html');
+      res.sendFile(__dirname + '/pages/mvp-index.html');
     } catch (err) {
       console.error(err);
     }

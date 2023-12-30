@@ -209,7 +209,7 @@ app.get('/auth/callback', async (req, res) => {
   }
 
   await callback(); // Wait for the callback function to complete
-  res.redirect(`${process.env.HOST_URL}/authorized/?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
+  res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
 });
 
 isFollower = async (username) => {
@@ -354,6 +354,14 @@ app.get('/test', (req, res) => {
     }
   }
   );
+
+  app.get('/authorized', async (req, res) => {
+    try {
+      es.sendFile(__dirname + '/pages/mvp-index.html');
+    } catch (err) {
+      console.error(err);
+    }
+  })
   
   app.listen(3000, () => {
     console.log('Express server is running on port 3000');

@@ -10,7 +10,7 @@ const multer = require('multer');
 const fs = require('fs');
 connectDB();
 //const listOfFollowers = JSON.parse(fs.readFileSync('followers.json', 'utf8'));
-const listOfFollowers = ['yoyoconnor69','connorcodes']
+let listOfFollowers = ['yoyoconnor69','connorcodes']
 app.use(session({
     secret: process.env.EXPRESS_SECRET,
     resave: false,

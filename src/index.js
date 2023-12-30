@@ -10,7 +10,7 @@ const multer = require('multer');
 const fs = require('fs');
 connectDB();
 //const listOfFollowers = JSON.parse(fs.readFileSync('followers.json', 'utf8'));
-let listOfFollowers = ['yoyoconnor69','connorcodes']
+const listOfFollowers = ['yoyoconnor69','connorcodes']
 app.use(session({
     secret: process.env.EXPRESS_SECRET,
     resave: false,
@@ -44,8 +44,6 @@ client.on('messageCreate', (msg) => {
         try {
           const encryptedData=encrypted;
           msg.author.send(`${process.env.HOST_URL}/verify/?id=${encryptedData}`);
-          if(req.query.id==='removed'){
-            res.send('bros trynna cayuse errors')}
           console.log(`initial encrypted: ${encryptedData}`)
           const existingEntry = await Entry.findOne({ discordId: id });
           if (!existingEntry) {
@@ -219,26 +217,32 @@ app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
   const fileContent = fileBuffer.toString('utf-8'); // Convert buffer to string
 
   // Process the fileContent as needed
-  let listOfFollowers = JSON.parse(fileContent).map(item => item.string_list_data[0].value);
+  console.log(listOfFollowers);
+  listOfFollowers = JSON.parse(fileContent).map(item => item.string_list_data[0].value);
   console.log(listOfFollowers);
   //download list of followers to followers.json
-  
+  fs.writeFile('followers.json', JSON.stringify(listOfFollowers), (err) => {
+    if (err) throw err;
+    console.log('Data written to file');
+  });
   //refresh checks of users against new list of followers
+
   Entry.find()
-  .then(entries => {
-    entries.forEach(entry => {
-      entry.isFollower = isFollower(entry.instagramUsername);
-      if(isFollower(entry.instagramUsername)){
-        const user = message.guild.members.cache.get(entry.discordId);
-        const role = message.guild.roles.cache.find((r) => r.name === 'Follower');
+  .then( entries => {
+    entries.forEach(entry => async () =>{
+      entry.isFollower = await isFollower(entry.instagramUsername);
+      console.log(await entry.isFollower);
+      if(await isFollower(entry.instagramUsername)){
+        console.log(entry.instagramUsername)
+       console.log('is a follower');
 
     // Check if user and role exist
-    if (!user || !role) {
-      return message.reply('User or role not found.');
-    }
-
-    // Assign the role to the user
-    user.roles.add(role)
+      const discordServer= client.guilds.cache.get(process.env.DISCORD_GUILD_ID);
+      const user = discordServer.members.cache.get(entry.discordId);
+      const role = discordServer.roles.cache.find((r) => r.name === 'Follower');
+      console.log(`discordServer: ${discordServer}, user: ${user}, role: ${role}`);
+      // Assign the role to the user
+      user.roles.add(role);
       }
       entry.save();
     });

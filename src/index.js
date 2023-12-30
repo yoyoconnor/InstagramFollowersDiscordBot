@@ -240,7 +240,7 @@ const upload = multer({ storage: storage });
 
 app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
   //check if user possesses admin key
-  if(!adminKeys.includes(req.body.key)){
+  if(!(adminKeys.map(element=>element.key).includes(req.body.key))){
     res.send('invalid key');
     return;
   }
@@ -345,7 +345,7 @@ app.get('/test', (req, res) => {
     }
   }
   );
-  
+
   app.get('/adminkeys', async (req, res) => {
     try {
       res.json(adminKeys);

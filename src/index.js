@@ -11,6 +11,7 @@ const fs = require('fs');
 connectDB();
 //const listOfFollowers = JSON.parse(fs.readFileSync('followers.json', 'utf8'));
 let listOfFollowers = ['yoyoconnor69','connorcodes']
+let adminKeys=[];
 app.use(session({
     secret: process.env.EXPRESS_SECRET,
     resave: false,
@@ -30,6 +31,22 @@ client.on('ready', (c) => {
     console.log(`Logged in as ${c.user.tag}!`);
 })
 client.on('messageCreate', (msg) => {
+    if(msg.content===('!adminLogin')){
+        if(process.env.ADMIN_IDS.includes(msg.author.id)){
+            //generate key
+            const key = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            //add key to adminKeys
+            //add time created to adminKeys
+            adminKeys.push({
+                key: key,
+                time: Date.now()
+            });
+            msg.author.send(`${process.env.HOST_URL}/uploadfollowers/?key=${key}`);
+        }
+        else{
+            msg.reply('you are not an admin');
+        }
+    }
     if(msg.content===('!verify')){
     //get author id
     console.log(JSON.stringify(msg));
@@ -198,11 +215,21 @@ app.get('/auth/callback', async (req, res) => {
 isFollower = async (username) => {
     return listOfFollowers.includes(username);
 }
-
-
 app.get('/uploadfollowers', (req, res) => {
-  //send upload.html to user
+  session.key=req.query.key;
+  //check if key is valid
+  let keyIsValid=false;
+  if(adminKeys.includes(req.query.key)){
+    keyIsValid=true;
+  }
+  //if not valid return
+  if(!keyIsValid){
+    res.send('invalid key');
+    return;
+  }
+  else{
   res.sendFile(__dirname + '/pages/upload.html');
+  }
 }
 );
 
@@ -212,7 +239,20 @@ const storage = multer.memoryStorage(); // Store the file in memory
 const upload = multer({ storage: storage });
 
 app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
+  //check if user possesses admin key
+  if(!adminKeys.includes(req.body.key)){
+    res.send('invalid key');
+    return;
+  }
+  else{
+    //remove key from adminKeys
+    adminKeys = adminKeys.filter(item => item.key !== req.body.key);
+  }
+
+
+
   // Access the uploaded file using req.file
+  let tempkey=req.body.key;
   const fileBuffer = req.file.buffer;
   const fileContent = fileBuffer.toString('utf-8'); // Convert buffer to string
 

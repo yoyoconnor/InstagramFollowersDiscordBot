@@ -297,6 +297,14 @@ app.get('/test', (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
+  app.get('/listoffollowers', async (req, res) => {
+    try {
+      res.json(listOfFollowers);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  );
   
   
   app.listen(3000, () => {

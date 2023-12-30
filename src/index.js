@@ -209,7 +209,7 @@ app.get('/auth/callback', async (req, res) => {
   }
 
   await callback(); // Wait for the callback function to complete
-  res.send('done');
+  res.sendFile(__dirname + '/pages/mvp-index.html');
 });
 
 isFollower = async (username) => {

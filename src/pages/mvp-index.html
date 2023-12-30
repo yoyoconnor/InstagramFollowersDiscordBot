@@ -9,7 +9,13 @@
 <body>
 
     <div className="title-text">Authentication Successful!</div>
+    <h1 id="discord-name"></h1>
+    <h1 id="insta-username"></h1>
     <div className="sub-title-text">You may exit window</div>
-    
+    <script>
+        const userdata = fetch(`${HOST_URL}/userdata`);
+        Document.getElementById("discord-name").innerHTML = userdata.discordTag;
+        Document.getElementById("insta-username").innerHTML = userdata.instagramUsername;
+    </script>
 </body>
 </html>

@@ -219,7 +219,7 @@ app.get('/uploadfollowers', (req, res) => {
   session.key=req.query.key;
   //check if key is valid
   let keyIsValid=false;
-  if(adminKeys.includes(req.query.key)){
+  if((adminKeys.map(element=>element.key).includes(req.body.key))){
     keyIsValid=true;
   }
   //if not valid return

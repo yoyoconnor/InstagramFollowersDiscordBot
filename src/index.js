@@ -346,6 +346,15 @@ app.get('/test', (req, res) => {
   }
   );
   
+  app.get('/adminkeys', async (req, res) => {
+    try {
+      res.json(adminKeys);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  );
+  
   
   app.listen(3000, () => {
     console.log('Express server is running on port 3000');

@@ -356,7 +356,13 @@ app.get('/test', (req, res) => {
   );
   app.get('/userdata', async (req, res) => {
     try {
-      res.json(session);
+      console.log(`session: ${JSON.stringify(session)}`);
+      res.json(
+        {
+          discordTag: session.discordTag,
+          instagramUsername: session.instagramUsername,
+        }
+      );
     } catch (err) {
       console.error(err);
     }

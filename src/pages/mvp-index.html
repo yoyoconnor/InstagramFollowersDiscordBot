@@ -13,7 +13,9 @@
     <h1 id="insta-username"></h1>
     <div className="sub-title-text">You may exit window</div>
     <script>
-        const userdata = fetch(`${HOST_URL}/userdata`);
+        //get userdata from url params or something
+        const userdata = window.location.search;
+        alert(userdata);
         Document.getElementById("discord-name").innerHTML = userdata.discordTag;
         Document.getElementById("insta-username").innerHTML = userdata.instagramUsername;
     </script>

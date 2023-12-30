@@ -209,7 +209,7 @@ app.get('/auth/callback', async (req, res) => {
   }
 
   await callback(); // Wait for the callback function to complete
-  res.sendFile(__dirname + '/pages/mvp-index.html');
+  res.redirect(`${process.env.HOST_URL}/authorized/?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
 });
 
 isFollower = async (username) => {
@@ -349,20 +349,6 @@ app.get('/test', (req, res) => {
   app.get('/adminkeys', async (req, res) => {
     try {
       res.json(adminKeys);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  );
-  app.get('/userdata', async (req, res) => {
-    try {
-      console.log(`session: ${JSON.stringify(session)}`);
-      res.json(
-        {
-          discordTag: session.discordTag,
-          instagramUsername: session.instagramUsername,
-        }
-      );
     } catch (err) {
       console.error(err);
     }

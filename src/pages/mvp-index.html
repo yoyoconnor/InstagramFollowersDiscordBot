@@ -20,7 +20,8 @@
         params.forEach((value, key) => {
             obj[key] = value;
         });
-
+        aler(obj)
+        alert(`${obj.discordTag} ${obj.instagramUsername}`);
         Document.getElementById("discord-name").innerHTML = obj.discordTag;
         Document.getElementById("insta-username").innerHTML = obj.instagramUsername;
     </script>

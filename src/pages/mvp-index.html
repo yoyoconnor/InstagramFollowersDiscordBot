@@ -26,8 +26,8 @@ const hash = window.location.hash; // Get the fragment identifier
 
 console.log('URL Parameters:', obj);
 console.log('Fragment Identifier:', hash);
-        Document.getElementById("discord-name").innerHTML = obj.discordTag;
-        Document.getElementById("insta-username").innerHTML = obj.instagramUsername;
+        document.getElementById("discord-name").innerHTML = `Discord: ${obj.discordTag}`;
+        document.getElementById("insta-username").innerHTML = `Instagram: ${obj.instagramUsername}`;
     </script>
 </body>
 </html>

@@ -15,9 +15,14 @@
     <script>
         //get userdata from url params or something
         const userdata = window.location.search;
-        alert(userdata);
-        Document.getElementById("discord-name").innerHTML = userdata.discordTag;
-        Document.getElementById("insta-username").innerHTML = userdata.instagramUsername;
+        const params = new URLSearchParams(window.location.search);
+        const obj = {};
+        params.forEach((value, key) => {
+            obj[key] = value;
+        });
+
+        Document.getElementById("discord-name").innerHTML = obj.discordTag;
+        Document.getElementById("insta-username").innerHTML = obj.instagramUsername;
     </script>
 </body>
 </html>

@@ -362,6 +362,14 @@ app.get('/test', (req, res) => {
       console.error(err);
     }
   })
+
+  app.post('/api/dataByInstagramUser', async (req, res) => {
+    //handle fetching map from json request body
+    let map = req.body.map;
+    console.log(map);
+    //can worry abt this later 
+  });
+
   
   app.listen(3000, () => {
     console.log('Express server is running on port 3000');

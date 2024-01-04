@@ -363,12 +363,49 @@ app.get('/test', (req, res) => {
     }
   })
 
+
+   //res.json should look like an array of objects that look like this:
+        // {
+        //     instagramUser: String,
+        //     discordUser: String, or null//null signifies that the user is not in the discord server
+        //     stageStatus: boolean, //true if user is in stage channel
+        //     verifiedFollower: boolean //true if user is a verified follower
+        // }
   app.post('/api/dataByInstagramUser', async (req, res) => {
-    //handle fetching map from json request body
-    let map = req.body.map;
-    console.log(map);
-    //can worry abt this later 
-  });
+    //handle array of instagram users
+    // body: JSON.stringify({
+    //users: Array.from(users)
+    //})
+    let users = req.body.users;
+    let returnData = [];
+    for (let i = 0; i < users.length; i++) {
+      let instagramUser = users[i];
+      let discordUser = null;
+      let stageStatus = false;
+      let verifiedFollower = false;
+      //use discord api to check if user is in stage channel
+
+      let entry = await Entry.findOne({ instagramUsername: instagramUser });
+      if (entry) {
+        discordUser = entry.discordTag;
+        verifiedFollower = entry.isFollower;
+      }
+      returnData.push({
+        instagramUser: instagramUser,
+        discordUser: discordUser,
+        stageStatus: stageStatus,
+        verifiedFollower: verifiedFollower
+      });
+    }
+    res.json(returnData);
+  }
+  );
+
+  app.get('/api/facebookLogin', async (req, res) => {
+    //send pages/facebookLogin.html
+    res.sendFile(__dirname + '/pages/facebookLogin.html');
+  }
+    )
 
   
   app.listen(3000, () => {

@@ -162,6 +162,7 @@ app.get('/auth/callback', async (req, res) => {
           resposne = await resposne.json();
 
           //check if user follows sudo 0=unknown 1=nonfollower 2=follower
+          session.access_token = idandaccess.access_token;
           session.instagramId = resposne.id;
           session.instagramUsername = resposne.username;
 

@@ -165,8 +165,7 @@ app.get('/auth/callback', async (req, res) => {
           session.access_token = idandaccess.access_token;
           session.instagramId = resposne.id;
           session.instagramUsername = resposne.username;
-
-          console.log(`session after callback: ${JSON.stringify(session)}`);
+          console.log(`instagramId: ${session.instagramId}, instagramUsername: ${session.instagramUsername}, access_token: ${session.access_token}`);
 
           // Use the async version of findOne
           Entry.findOne({ discordId: session.discordId })

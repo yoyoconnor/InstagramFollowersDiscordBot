@@ -158,6 +158,7 @@ app.get('/auth/callback', async (req, res) => {
           });
 
           let idandaccess = await response.json();
+          console.log(idandaccess);
           let resposne = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${idandaccess.access_token}`);
           resposne = await resposne.json();
 

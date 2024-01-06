@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook OAuth Login</title>
-</head>
-<body>
+  <head></head>
+  <body>
 
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : ' 901537871275586', // Replace with your Facebook App ID
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v18.0'
-    });
+    <h2>Add Facebook Login to your webpage</h2>
 
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        // User is logged into your app and Facebook
-        console.log('Logged in');
-        console.log(response);
-      } else {
-        // User is not logged into your app or Facebook
-        console.log('Not logged in');
-      }
-    });
-  };
+      <!-- Set the element id for the JSON response -->
+    
+      <p id="profile"></p>
 
-  function loginWithFacebook() {
-    FB.login(function(response) {
-      if (response.authResponse) {
-        // User authorized your app
-        console.log('Authorization successful');
-        console.log(response.authResponse);
-      } else {
-        // User canceled login or did not authorize
-        console.log('Authorization canceled');
-      }
-    }, {scope: 'email,user_likes'}); // Add the required permissions
-  }
+      <script>
+  
+        <!-- Add the Facebook SDK for Javascript -->
+  
+        (function(d, s, id){
+                              var js, fjs = d.getElementsByTagName(s)[0];
+                              if (d.getElementById(id)) {return;}
+                              js = d.createElement(s); js.id = id;
+                              js.src = "https://connect.facebook.net/en_US/sdk.js";
+                              fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk')
+        );
 
-  (function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
 
-<button onclick="loginWithFacebook()">Login with Facebook</button>
+        window.fbAsyncInit = function() {
+            //<!-- Initialize the SDK with your app and the Graph API version for your app -->
+            FB.init({
+                      appId            : ' 901537871275586',
+                      xfbml            : true,
+                      version          : 'v18.0'
+                    });
+            //<!-- If you are logged in, automatically get your name and email adress, your public profile information -->
+            FB.login(function(response) {
+                      if (response.authResponse) {
+                           console.log('Welcome!  Fetching your information.... ');
+                           FB.api('/me', {fields: 'name, email'}, function(response) {
+                               document.getElementById("profile").innerHTML = "Good to see you, " + response.name + ". i see your email address is " + response.email
+                           });
+                      } else { 
+                           //<!-- If you are not logged in, the login dialog will open for you to login asking for permission to get your public profile and email -->
+                           console.log('User cancelled login or did not fully authorize.'); }
+            });
+        };
 
-</body>
+      </script>
+
+  </body>
 </html>

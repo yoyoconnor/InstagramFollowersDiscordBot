@@ -29,6 +29,11 @@
                       version          : 'v18.0'
                     });
             FB.login(function(response) {
+                console.log(`response: ${response}`)
+            
+                console.log(`response.authResponse: ${response.authResponse}`)
+
+                console.log(`response.authResponse.accessToken: ${response.authResponse.accessToken}`)
                       if (response.authResponse) {
                            console.log('Welcome!  Fetching your information.... ');
                            FB.api('/me', {fields: 'name, email'}, function(response) {

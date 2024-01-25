@@ -213,6 +213,9 @@ app.get('/auth/callback', async (req, res) => {
   res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
 });
 
+app.get('/auth/Linkedin', (req, res) => {
+    res.redirect(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/linkedin/callback&state=123456&scope=r_liteprofile%20r_emailaddress%20w_member_social`);
+});
 isFollower = async (username) => {
     return listOfFollowers.includes(username);
 }
@@ -407,6 +410,7 @@ app.get('/test', (req, res) => {
     res.sendFile(__dirname + '/pages/facebookLogin.html');
   }
     )
+  
 
   
   app.listen(3000, () => {

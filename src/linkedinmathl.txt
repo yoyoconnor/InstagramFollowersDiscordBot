@@ -1,0 +1,10 @@
+inital numbers
+a: number of total mebers in pool
+b: target group size(inclusive of person) ie if u want 10 others this value should be 11
+assume poolsize is divisubile by groupsize even tho its probably not
+
+for inital population there is an expected value of 0 users sharing agroup with certain person
+
+for 2nd group cohort:
+probabilty of a member a specific being in at least oner your previos group= (cohort n groupsize-1)/(poolsize-1) + ...(cohort 1 groupsize -1)/(poolsize-1)
+expected # of members being from a previous group = (current groupsize) * ((cohort n groupsize -1)/(poolsize -1) + ... .(cohort 1 groupsize -1)/(poolsize-1) )

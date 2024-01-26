@@ -212,7 +212,12 @@ app.get('/auth/callback', async (req, res) => {
 
   await callback(); // Wait for the callback function to complet
   res.redirect(`${process.env.HOST_URL}/linkedinaccount?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
+
   //res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
+});
+
+app.get('/linkedinaccount', (req, res) => {
+  res.sendFile(__dirname + '/pages/linkedinaccount.html');
 });
 
 app.get('/uploadfollowers', (req, res) => {

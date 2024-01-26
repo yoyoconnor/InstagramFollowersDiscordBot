@@ -213,12 +213,15 @@ app.get('/auth/callback', async (req, res) => {
   res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
 });
 
-app.get('/auth/Linkedin', (req, res) => {
+app.get('/auth/linkedin', (req, res) => {
     res.redirect(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/linkedin/callback&state=123456&scope=r_liteprofile%20r_emailaddress%20w_member_social`);
 });
 isFollower = async (username) => {
     return listOfFollowers.includes(username);
 }
+app.get('/auth/linkedin/callback', async (req, res) => {
+  res.send('linkedin callback');
+});
 app.get('/uploadfollowers', (req, res) => {
   session.key=req.query.key;
   //check if key is valid

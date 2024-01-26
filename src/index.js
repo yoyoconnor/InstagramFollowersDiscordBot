@@ -8,6 +8,7 @@ const Entry = require("./db/schema");
 const session = require('express-session');
 const multer = require('multer');
 const fs = require('fs');
+const querystring = require('querystring');
 connectDB();
 //const listOfFollowers = JSON.parse(fs.readFileSync('followers.json', 'utf8'));
 let listOfFollowers = ['yoyoconnor69','connorcodes']
@@ -209,19 +210,11 @@ app.get('/auth/callback', async (req, res) => {
       }
   }
 
-  await callback(); // Wait for the callback function to complete
-  res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
+  await callback(); // Wait for the callback function to complet
+  res.redirect(`${process.env.HOST_URL}/linkedinaccount?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
+  //res.redirect(`${process.env.HOST_URL}/authorized?discordId=${session.discordId}&discordTag=${session.discordTag}&instagramId=${session.instagramId}&instagramUsername=${session.instagramUsername}`);
 });
 
-app.get('/auth/linkedin', (req, res) => {
-    res.redirect(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.HOST_URL}/auth/linkedin/callback&state=123456&scope=r_liteprofile%20r_emailaddress%20w_member_social`);
-});
-isFollower = async (username) => {
-    return listOfFollowers.includes(username);
-}
-app.get('/auth/linkedin/callback', async (req, res) => {
-  res.send('linkedin callback');
-});
 app.get('/uploadfollowers', (req, res) => {
   session.key=req.query.key;
   //check if key is valid
@@ -307,12 +300,6 @@ app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
 
   // Respond to the client
   res.status(200).send('File uploaded successfully');
-});
-
-port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
 
 app.get('/test', (req, res) => {
@@ -415,11 +402,11 @@ app.get('/test', (req, res) => {
     )
   
 
-  
-  app.listen(3000, () => {
-    console.log('Express server is running on port 3000');
-  });
-//display all mongo entries
+    port = process.env.PORT || 3000;
+
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
 
 
 

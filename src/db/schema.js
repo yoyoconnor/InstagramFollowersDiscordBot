@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
     instagramId: { type: String, required: false },
     instagramUsername: { type: String, required: false },
     isFollower: { type: Boolean, required: false },
+    linkedIn: { type: String, required: false }
 });
   
 const Entry = mongoose.model("Entry", schema);

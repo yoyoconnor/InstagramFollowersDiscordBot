@@ -220,7 +220,7 @@ app.get('/linkedinaccount', (req, res) => {
   res.sendFile(__dirname + '/pages/linkedinaccount.html');
 });
 app.post('/linkedinaccount', (req, res) => {
-  let linkedInUsername=req.body.linkedInUsername;
+  let linkedIn=req.body.linkedIn;
   let discordId=session.discordId||res.send('no discord id');
   Entry.findOne({ discordId: discordId })
   .then(async entry => {
@@ -230,9 +230,9 @@ app.post('/linkedinaccount', (req, res) => {
     }
     else
     {
-      entry.linkedInUsername=linkedInUsername;
+      entry.linkedIn=linkedIn;
       await entry.save();
-      res.send('success');
+      res.redirect(mvp-index.html);
     }
   })
   .catch(err => {

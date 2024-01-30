@@ -220,7 +220,7 @@ app.get('/linkedinaccount', (req, res) => {
   res.sendFile(__dirname + '/pages/linkedinaccount.html');
 });
 app.post('/linkedinaccount', (req, res) => {
-  let linkedIn=req.body.linkedin;
+  let linkedin=req.body.linkedin;
   let discordId=session.discordId||res.send('no discord id');
   Entry.findOne({ discordId: discordId })
   .then(async entry => {

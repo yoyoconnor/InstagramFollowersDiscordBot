@@ -230,7 +230,7 @@ app.post('/linkedinaccount', (req, res) => {
     }
     else
     {
-      entry.linkedIn=linkedIn;
+      entry.linkedIn=linkedin;
       await entry.save();
       console.log('LINKEDIN')
       console.log(linkedIn)

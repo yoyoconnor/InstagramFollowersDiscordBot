@@ -232,7 +232,9 @@ app.post('/linkedinaccount', (req, res) => {
     {
       entry.linkedIn=linkedIn;
       await entry.save();
-      res.redirect(mvp-index.html);
+      console.log('LINKEDIN')
+      console.log(linkedIn)
+      res.sendFile(__dirname+ '/pages/mvp-index.html');
     }
   })
   .catch(err => {

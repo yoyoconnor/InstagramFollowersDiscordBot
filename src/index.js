@@ -219,6 +219,34 @@ app.get('/auth/callback', async (req, res) => {
 app.get('/linkedinaccount', (req, res) => {
   res.sendFile(__dirname + '/pages/linkedinaccount.html');
 });
+app.post('/linkedinaccount', (req, res) => {
+  let linkedInUsername=req.body.linkedInUsername;
+  let discordId=session.discordId||res.send('no discord id');
+  Entry.findOne({ discordId: discordId })
+  .then(async entry => {
+    if (!entry) {
+      console.log('no entry found');
+      return;
+    }
+    else
+    {
+      entry.linkedInUsername=linkedInUsername;
+      await entry.save();
+      res.send('success');
+    }
+  })
+  .catch(err => {
+    // Handle error
+    console.error(err);
+  }
+  );
+});
+
+  //check if linkedin account is valid
+  //if valid, add to database
+  //if not valid, return error
+  //if valid, return success
+
 
 app.get('/uploadfollowers', (req, res) => {
   session.key=req.query.key;
@@ -296,6 +324,7 @@ app.post('/uploadfollowers', upload.single('jsonFile'), (req, res) => {
     console.error(err);
   }
   );
+  
   //asdign roles
 
   

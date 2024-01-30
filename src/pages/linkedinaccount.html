@@ -4,52 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        :root {
+            font-size: 16px;
+            color: white;
+            background-color: rgb(32, 46, 66);
+            font-weight: 600;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            gap: 1.25rem;
+        }
+
+        .title-text {
+            font-size: 2.75rem;
+        }
+
+        #mvp-svg {
+            height: 8rem;
+            width: 8rem;
+        }
+
+        .sub-title-text {
+            font-size: 2.25rem;
+        }
+    </style>
 </head>
 <body>
-    <style>
-        :root{
-    font-size: 16px;
-    color: white;
-    background-color: rgb(32, 46, 66);
-    font-weight: 600;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    width: 100vw;
-    height: 100vh;
-    gap: 1.25rem;
-}
-
-.title-text{
-    font-size: 2.75rem;
-}
-
-#mvp-svg{
-    height: 8rem;
-    width: 8rem;
-}
-
-.sub-title-text{
-    font-size: 2.25rem;
-}
-    </style>
-
     <div class="title-text">Please Enter your LinkedIN</div>
-    <form type="text"></form>
+    <form>
+        <input type="text" id="text" placeholder="Enter your LinkedIN">
+    </form>
     <button id="submit">Submit</button>
     <script>
-        let sub= document.getElementById("submit")
+        let sub = document.getElementById("submit");
         sub.addEventListener("click", function(){
-            let text = document.getElementById("text").value
-            let url= window.location.arguements
-            res.send(url)
-        })
+            let text = document.getElementById("text").value;
+            // Assuming you want to navigate to the entered LinkedIn profile
+            window.location.href = text;
+        });
+        //send to backend
+        fetch()
     </script>
 </body>
 </html>

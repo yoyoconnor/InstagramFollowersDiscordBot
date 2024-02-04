@@ -5,6 +5,7 @@ let poolsize=peopleList.length;
 console.log(poolsize);
 let initialGroupSize=11;
 let groupSizes=[];
+let csvCollector=[];
 //create an array of people and then thier set
 let arrayOfUserSets=[];
 for(let i=0;i<poolsize;i++){
@@ -68,21 +69,17 @@ return allgroups;
 }
 
 //creat csv of sets
-const createCSV = () => {
-    csv='user,set\n';
-    for(let i=0;i<arrayOfUserSets.length;i++){
-        let user=arrayOfUserSets[i].user;
-        let set=arrayOfUserSets[i].set;
-        csv+=user+',';
-        for (let item of set) {
-            csv+=item+',';
-        }
-        csv+='\n';
-    }
-    
-    console.log(csv)
-}
 //generate groups
+const createCSV = () => {
+    console.log(csvCollector)
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "user,responses\n";
+    csvCollector.forEach(function(rowArray) {
+        let row = rowArray.user + ',' + rowArray.responses.join(",");
+        csvContent += row + "\r\n";
+    });
+    console.log(csvContent);
+}
 let massiveArr=[]
 for(let i=0;i<6;i++){
 let groups=createGroups(findNextGroupSize())
@@ -102,10 +99,19 @@ for(let i=0;i<groups.length;i++){
         
         const index = userResponses.findIndex(element => element.user === groups[i][j]);
         userResponses[index].responses=userResponse;
+        if(csvCollector.find(element=>element.user===groups[i][j])===undefined){
+            csvCollector.push({user:groups[i][j],responses:[]});
+        }
+        var collection = csvCollector.find(element=>element.user===groups[i][j]).responses;
+        for (let k=0;k<userResponse.length;k++){
+            collection.push(userResponse[k]);
+        }
+
     }
     }
     
 massiveArr.push(groups);
 //assign itterations to indivual output 
 }
+
 createCSV();
